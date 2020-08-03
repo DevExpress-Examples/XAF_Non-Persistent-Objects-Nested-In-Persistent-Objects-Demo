@@ -44,7 +44,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                 obj.OwnerKey = this.Oid;
                 obj.LocalKey = e.NewIndex + 1;
             }
-            FeatureList = Save(Features);
+            FeatureList = SerializationHelper.Save(Features);
         }
         private string _FeatureList;
         [Browsable(false)]
@@ -55,6 +55,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         }
         #endregion
 
+        #region MainFeature
         private Feature _MainFeature;
         [DataSourceProperty(nameof(Features))]
         public Feature MainFeature {
@@ -67,6 +68,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             get { return _MainFeatureName; }
             set { SetPropertyValue<string>(nameof(MainFeatureName), ref _MainFeatureName, value); }
         }
+        #endregion
 
         #region Resources
         private BindingList<Resource> _Resources;
@@ -85,7 +87,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             if(e.ListChangedType == ListChangedType.ItemAdded) {
                 list[e.NewIndex].OwnerKey = this.Oid;
             }
-            ResourceList = Save(Resources);
+            ResourceList = SerializationHelper.Save(Resources);
         }
         private string _ResourceList;
         [Browsable(false)]
@@ -105,13 +107,13 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         protected override void OnLoaded() {
             base.OnLoaded();
             int counter = 0;
-            Load(Features, FeatureList, o => { o.OwnerKey = this.Oid; o.LocalKey = ++counter; });
-            Load(Resources, ResourceList, o => { o.OwnerKey = this.Oid; });
+            SerializationHelper.Load(Features, FeatureList, ObjectSpace, o => { o.OwnerKey = this.Oid; o.LocalKey = ++counter; });
+            SerializationHelper.Load(Resources, ResourceList, ObjectSpace, o => { o.OwnerKey = this.Oid; });
             _MainFeature = MainFeatureName == null ? null : Features.FirstOrDefault(f => f.Name == MainFeatureName);
         }
         protected override void OnSaving() {
-            FeatureList = Save(Features);
-            ResourceList = Save(Resources);
+            FeatureList = SerializationHelper.Save(Features);
+            ResourceList = SerializationHelper.Save(Resources);
             base.OnSaving();
         }
         private IObjectSpace objectSpace;
@@ -124,39 +126,5 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                 }
             }
         }
-
-        #region NP Serialization
-        private void Load<T>(BindingList<T> list, string data, Action<T> acceptor) {
-            list.RaiseListChangedEvents = false;
-            list.Clear();
-            if(data != null) {
-                var serializer = new XmlSerializer(typeof(T).MakeArrayType());
-                using(var stream = new MemoryStream(Encoding.UTF8.GetBytes(data))) {
-                    var objs = serializer.Deserialize(stream) as IList<T>;
-                    foreach(var obj in objs) {
-                        acceptor?.Invoke(obj);
-                        var tobj = ObjectSpace.GetObject(obj);
-                        var aobj = tobj as IAssignable<T>;
-                        if(aobj != null) {
-                            aobj.Assign(obj); // always?
-                        }
-                        list.Add(tobj);
-                    }
-                }
-            }
-            list.RaiseListChangedEvents = true;
-            list.ResetBindings();
-        }
-        private string Save<T>(IList<T> list) {
-            if(list == null || list.Count == 0) {
-                return null;
-            }
-            var serializer = new XmlSerializer(typeof(T).MakeArrayType());
-            using(var stream = new MemoryStream()) {
-                serializer.Serialize(stream, list.ToArray());
-                return Encoding.UTF8.GetString(stream.ToArray());
-            }
-        }
-        #endregion
     }
 }

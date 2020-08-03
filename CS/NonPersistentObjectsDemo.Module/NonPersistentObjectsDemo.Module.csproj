@@ -148,6 +148,7 @@
     <Compile Include="BusinessObjects\NonPersistentObjectAdapter.cs" />
     <Compile Include="BusinessObjects\CollectionComplete\Resource.cs" />
     <Compile Include="BusinessObjects\CollectionStoredSeparately\Technology.cs" />
+    <Compile Include="BusinessObjects\SerializationHelper.cs" />
     <Compile Include="Controllers\MyController.cs" />
     <Compile Include="DatabaseUpdate\Updater.cs" />
     <Compile Include="Module.cs">

@@ -42,7 +42,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             if(e.ListChangedType == ListChangedType.ItemAdded) {
                 list[e.NewIndex].ID = ++Agent.Sequence;
             }
-            AgentList = Save(Agents);
+            AgentList = SerializationHelper.Save(Agents);
         }
         private string _AgentList;
         [Browsable(false)]
@@ -55,10 +55,10 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
         protected override void OnLoaded() {
             base.OnLoaded();
-            Load(Agents, AgentList, o => { o.ID = ++Agent.Sequence; });
+            SerializationHelper.Load(Agents, AgentList, ObjectSpace, o => { o.ID = ++Agent.Sequence; });
         }
         protected override void OnSaving() {
-            AgentList = Save(Agents);
+            AgentList = SerializationHelper.Save(Agents);
             base.OnSaving();
         }
         private IObjectSpace objectSpace;
@@ -71,39 +71,5 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                 }
             }
         }
-
-        #region NP Serialization
-        private void Load<T>(BindingList<T> list, string data, Action<T> acceptor) {
-            list.RaiseListChangedEvents = false;
-            list.Clear();
-            if(data != null) {
-                var serializer = new XmlSerializer(typeof(T).MakeArrayType());
-                using(var stream = new MemoryStream(Encoding.UTF8.GetBytes(data))) {
-                    var objs = serializer.Deserialize(stream) as IList<T>;
-                    foreach(var obj in objs) {
-                        acceptor?.Invoke(obj);
-                        var tobj = ObjectSpace.GetObject(obj);
-                        var aobj = tobj as IAssignable<T>;
-                        if(aobj != null) {
-                            aobj.Assign(obj);
-                        }
-                        list.Add(tobj);
-                    }
-                }
-            }
-            list.RaiseListChangedEvents = true;
-            list.ResetBindings();
-        }
-        private string Save<T>(IList<T> list) {
-            if(list == null || list.Count == 0) {
-                return null;
-            }
-            var serializer = new XmlSerializer(typeof(T).MakeArrayType());
-            using(var stream = new MemoryStream()) {
-                serializer.Serialize(stream, list.ToArray());
-                return Encoding.UTF8.GetString(stream.ToArray());
-            }
-        }
-        #endregion
     }
 }
