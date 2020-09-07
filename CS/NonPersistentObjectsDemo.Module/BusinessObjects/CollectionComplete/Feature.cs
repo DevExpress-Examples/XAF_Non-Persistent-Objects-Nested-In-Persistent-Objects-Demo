@@ -27,7 +27,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         [VisibleInDetailView(false)]
         [VisibleInListView(false)]
         [DevExpress.ExpressApp.Data.Key]
-        public string ID { get { return string.Format("{0:N}:{1:x8}", OwnerKey, LocalKey); } }
+        public string ID { get { return string.Format("{0:N}.{1:x8}", OwnerKey, LocalKey); } }
         private string _Name;
         public string Name {
             get { return _Name; }
@@ -92,7 +92,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             if(string.IsNullOrEmpty(key)) {
                 return false;
             }
-            var parts = key.Split(':');
+            var parts = key.Split('.');
             if(parts.Length != 2) {
                 return false;
             }
