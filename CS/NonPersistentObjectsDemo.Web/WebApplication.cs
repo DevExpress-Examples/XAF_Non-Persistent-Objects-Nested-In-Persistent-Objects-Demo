@@ -98,8 +98,8 @@ namespace NonPersistentObjectsDemo.Web {
         }
         public override IObjectSpace GetObjectSpaceToShowDetailViewFrom(Frame sourceFrame, Type objectType, TargetWindow targetWindow) {
             if(sourceFrame.View is ListView &&
-                sourceFrame.View.ObjectTypeInfo.Type == typeof(Module.BusinessObjects.Agent) &&
-                objectType == typeof(Module.BusinessObjects.Agent)) {
+                sourceFrame.View.ObjectTypeInfo.Type == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent) &&
+                objectType == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent)) {
                 return sourceFrame.View.ObjectSpace;
             }
             return base.GetObjectSpaceToShowDetailViewFrom(sourceFrame, objectType, targetWindow);

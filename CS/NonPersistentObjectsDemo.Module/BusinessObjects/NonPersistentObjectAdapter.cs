@@ -17,17 +17,17 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
     }
 
     public abstract class NonPersistentObjectAdapter<TObject, TKey> {
-        private NonPersistentObjectSpace objectSpace;
+        private NonPersistentObjectSpace _objectSpace;
         private Dictionary<TKey, TObject> objectMap;
-        protected NonPersistentObjectSpace ObjectSpace { get { return objectSpace; } }
+        protected NonPersistentObjectSpace ObjectSpace { get { return _objectSpace; } }
         public NonPersistentObjectAdapter(NonPersistentObjectSpace npos) {
-            this.objectSpace = npos;
-            objectSpace.ObjectsGetting += ObjectSpace_ObjectsGetting;
-            objectSpace.ObjectGetting += ObjectSpace_ObjectGetting;
-            objectSpace.ObjectByKeyGetting += ObjectSpace_ObjectByKeyGetting;
-            objectSpace.Reloaded += ObjectSpace_Reloaded;
-            objectSpace.ObjectReloading += ObjectSpace_ObjectReloading;
-            objectSpace.CustomCommitChanges += ObjectSpace_CustomCommitChanges;
+            this._objectSpace = npos;
+            _objectSpace.ObjectsGetting += ObjectSpace_ObjectsGetting;
+            _objectSpace.ObjectGetting += ObjectSpace_ObjectGetting;
+            _objectSpace.ObjectByKeyGetting += ObjectSpace_ObjectByKeyGetting;
+            _objectSpace.Reloaded += ObjectSpace_Reloaded;
+            _objectSpace.ObjectReloading += ObjectSpace_ObjectReloading;
+            _objectSpace.CustomCommitChanges += ObjectSpace_CustomCommitChanges;
             objectMap = new Dictionary<TKey, TObject>();
         }
         protected virtual void GuardKeyNotEmpty(TObject obj) {
@@ -35,7 +35,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                 throw new InvalidOperationException(); // DEBUG
         }
         protected virtual TKey GetKeyValue(TObject obj) {
-            return (TKey)objectSpace.GetKeyValue(obj);
+            return (TKey)_objectSpace.GetKeyValue(obj);
         }
         private void AcceptObject(TObject obj) {
             TObject result;
@@ -92,7 +92,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                     }
                     else {
                         if(link.ObjectSpace.IsNewObject(obj)) {
-                            if(link.ObjectSpace == objectSpace) {
+                            if(link.ObjectSpace.Equals(_objectSpace)) {
                                 e.TargetObject = e.SourceObject;
                             }
                             else {
@@ -100,7 +100,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                             }
                         }
                         else {
-                            if(link.ObjectSpace == objectSpace) {
+                            if(link.ObjectSpace.Equals(_objectSpace)) {
                                 e.TargetObject = AcceptOrUpdate(obj);
                             }
                             else {
@@ -153,7 +153,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         }
         private void ObjectSpace_CustomCommitChanges(object sender, HandledEventArgs e) {
             var list = new List<TObject>();
-            foreach(var obj in objectSpace.ModifiedObjects) {
+            foreach(var obj in _objectSpace.ModifiedObjects) {
                 if(obj is TObject) {
                     list.Add((TObject)obj);
                 }

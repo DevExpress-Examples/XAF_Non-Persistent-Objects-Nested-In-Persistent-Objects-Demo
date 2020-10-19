@@ -10,20 +10,20 @@ using DevExpress.ExpressApp.DC;
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
     [DomainComponent]
-    [DefaultProperty(nameof(Name))]
+    [DefaultProperty(nameof(Group.Name))]
     public class Group {
         [DevExpress.ExpressApp.Data.Key]
         public string Name { get; set; }
     }
 
     class NPGroupAdapter {
-        private NonPersistentObjectSpace objectSpace;
-        protected NonPersistentObjectSpace ObjectSpace { get { return objectSpace; } }
+        private NonPersistentObjectSpace _objectSpace;
+        protected NonPersistentObjectSpace ObjectSpace { get { return _objectSpace; } }
         private List<Group> objects;
         public NPGroupAdapter(NonPersistentObjectSpace npos) {
-            this.objectSpace = npos;
-            objectSpace.ObjectsGetting += ObjectSpace_ObjectsGetting;
-            objectSpace.ObjectByKeyGetting += ObjectSpace_ObjectByKeyGetting;
+            this._objectSpace = npos;
+            _objectSpace.ObjectsGetting += ObjectSpace_ObjectsGetting;
+            _objectSpace.ObjectByKeyGetting += ObjectSpace_ObjectByKeyGetting;
         }
         protected Group GetObjectByKey(string key) {
             return new Group() { Name = key };

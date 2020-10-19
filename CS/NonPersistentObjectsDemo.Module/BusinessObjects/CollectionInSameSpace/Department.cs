@@ -14,7 +14,7 @@ using DevExpress.Xpo;
 
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
-    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Name))]
+    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Department.Name))]
     [DefaultClassOptions]
     public class Department : BaseObject, IObjectSpaceLink {
         public Department(Session session) : base(session) { }
@@ -61,13 +61,13 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             AgentList = SerializationHelper.Save(Agents);
             base.OnSaving();
         }
-        private IObjectSpace objectSpace;
-        protected IObjectSpace ObjectSpace { get { return objectSpace; } }
+        private IObjectSpace _objectSpace;
+        protected IObjectSpace ObjectSpace { get { return _objectSpace; } }
         IObjectSpace IObjectSpaceLink.ObjectSpace {
-            get { return objectSpace; }
+            get { return _objectSpace; }
             set {
-                if(objectSpace != value) {
-                    objectSpace = value;
+                if(_objectSpace != value) {
+                    _objectSpace = value;
                 }
             }
         }

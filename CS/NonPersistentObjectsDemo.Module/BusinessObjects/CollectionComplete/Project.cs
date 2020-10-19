@@ -14,7 +14,7 @@ using DevExpress.Xpo;
 
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
-    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(CodeName))]
+    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Project.CodeName))]
     [DefaultClassOptions]
     public class Project : BaseObject, IObjectSpaceLink {
         public Project(Session session) : base(session) { }
@@ -116,13 +116,13 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             ResourceList = SerializationHelper.Save(Resources);
             base.OnSaving();
         }
-        private IObjectSpace objectSpace;
-        protected IObjectSpace ObjectSpace { get { return objectSpace; } }
+        private IObjectSpace _objectSpace;
+        protected IObjectSpace ObjectSpace { get { return _objectSpace; } }
         IObjectSpace IObjectSpaceLink.ObjectSpace {
-            get { return objectSpace; }
+            get { return _objectSpace; }
             set {
-                if(objectSpace != value) {
-                    objectSpace = value;
+                if(_objectSpace != value) {
+                    _objectSpace = value;
                 }
             }
         }

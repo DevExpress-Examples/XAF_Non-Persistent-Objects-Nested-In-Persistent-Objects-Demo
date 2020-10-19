@@ -14,7 +14,7 @@ using DevExpress.Xpo;
 
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
-    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Name))]
+    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Product.Name))]
     [DefaultClassOptions]
     public class Product : BaseObject {
         public Product(Session session) : base(session) { }

@@ -14,7 +14,7 @@ using DevExpress.Xpo;
 
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
-    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Name))]
+    [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Epoch.Name))]
     [DefaultClassOptions]
     public class Epoch : BaseObject, IObjectSpaceLink {
         public Epoch(Session session) : base(session) { }
@@ -46,25 +46,25 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
         protected override void OnLoaded() {
             base.OnLoaded();
-            Load(Technologies, TechnologyList);
+            LoadList(Technologies, TechnologyList);
         }
         protected override void OnSaving() {
-            TechnologyList = Save(Technologies);
+            TechnologyList = SaveList(Technologies);
             base.OnSaving();
         }
-        private IObjectSpace objectSpace;
-        protected IObjectSpace ObjectSpace { get { return objectSpace; } }
+        private IObjectSpace _objectSpace;
+        protected IObjectSpace ObjectSpace { get { return _objectSpace; } }
         IObjectSpace IObjectSpaceLink.ObjectSpace {
-            get { return objectSpace; }
+            get { return _objectSpace; }
             set {
-                if(objectSpace != value) {
-                    objectSpace = value;
+                if(_objectSpace != value) {
+                    _objectSpace = value;
                 }
             }
         }
 
         #region NP Serialization
-        private void Load(IList<Technology> list, string data) {
+        private void LoadList(IList<Technology> list, string data) {
             list.Clear();
             if(data != null) {
                 foreach(var s in data.Split(',')) {
@@ -78,7 +78,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                 }
             }
         }
-        private string Save(IList<Technology> list) {
+        private string SaveList(IList<Technology> list) {
             if(list == null || list.Count == 0) {
                 return null;
             }
