@@ -4,49 +4,79 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{8C3026D1-113C-4B88-9F91-236753790C60}</ProjectGuid>
-    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NonPersistentObjectsDemo.Web</RootNamespace>
-    <AssemblyName>NonPersistentObjectsDemo.Web</AssemblyName>
+    <ProjectGuid>{13E1ACF3-669C-4405-8260-E70BE603E197}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace></RootNamespace>
+    <AssemblyName>NonPersistentObjectsDemo.Win</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <ApplicationIcon>ExpressApp.ico</ApplicationIcon>
     <FileAlignment>512</FileAlignment>
-    <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44300</IISExpressSSLPort>
-    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
-    <Use64BitIISExpress />
-    <UseGlobalApplicationHostFile />
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'EasyTest|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;EASYTEST</DefineConstants>
+    <OutputPath>bin\EasyTest\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DefineConstants>EASYTEST=True</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <RemoveIntegerChecks>true</RemoveIntegerChecks>
   </PropertyGroup>
   <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Windows.Forms" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DevExpress.BonusSkins.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.Data.Desktop.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DevExpress.Data.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.DataAccess.v20.2.UI">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -58,7 +88,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.FileAttachment.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.FileAttachment.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -74,7 +104,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.ReportsV2.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.ReportsV2.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -82,7 +112,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.Scheduler.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.Scheduler.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -90,7 +120,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.ScriptRecorder.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.ScriptRecorder.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -106,7 +136,7 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.TreeListEditors.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.TreeListEditors.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -118,11 +148,11 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.Validation.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.Validation.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.ExpressApp.Web.v20.2">
+    <Reference Include="DevExpress.ExpressApp.Win.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -158,23 +188,35 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.Web.ASPxScheduler.v20.2">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DevExpress.Web.ASPxThemes.v20.2">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DevExpress.Web.ASPxTreeList.v20.2">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="DevExpress.Web.v20.2">
+    <Reference Include="DevExpress.Utils.v20.2.UI">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.Xpo.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraBars.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraEditors.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraGrid.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraLayout.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraNavBar.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraPrinting.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -194,15 +236,27 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v20.2.Web">
+    <Reference Include="DevExpress.XtraReports.v20.2.Extensions">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
-    <Reference Include="DevExpress.XtraReports.v20.2.Web.WebForms">
+    <Reference Include="DevExpress.XtraRichEdit.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraScheduler.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
     <Reference Include="DevExpress.XtraScheduler.v20.2.Core">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraTreeList.v20.2">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="DevExpress.XtraVerticalGrid.v20.2">
       <SpecificVersion>False</SpecificVersion>
       <Private>True</Private>
     </Reference>
@@ -222,11 +276,15 @@
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Design">
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Drawing">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web">
+    <Reference Include="System.Windows.Forms">
       <SpecificVersion>False</SpecificVersion>
       <Private>False</Private>
     </Reference>
@@ -235,141 +293,78 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System">
+      <Name>System</Name>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Configuration">
+    <Reference Include="System.configuration">
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Data">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
+      <Name>System.Data</Name>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.EnterpriseServices">
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Web">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.ApplicationServices">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.DynamicData">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Entity">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Extensions">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Mobile">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Web.Services">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.XML">
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml.Linq">
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Default.aspx" />
-    <Content Include="Error.aspx" />
-    <Content Include="Global.asax" />
-    <Content Include="Images\Logo.svg" />
-    <Content Include="Login.aspx" />
+    <EmbeddedResource Include="Images\Logo.svg" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Error.aspx.designer.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="WebApplication.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Error.aspx.cs">
-      <DependentUpon>Error.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
+    <Content Include="ExpressApp.ico" />
+    <None Include="ReadMe.txt" />
+    <None Include="Images\ReadMe.txt" />
+    <None Include="App.config" />
     <Content Include="Model.xafml">
-      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Model.Desktop.xafml" />
-    <Content Include="Model.Tablet.xafml" />
-    <None Include="ReadMe.txt" />
-    <Content Include="Web.config" />
+    <Compile Include="Program.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="WinApplication.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinApplication.Designer.vb">
+      <DependentUpon>WinApplication.vb</DependentUpon>
+    </Compile>
+    <Compile Include="XafSplashScreen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="XafSplashScreen.Designer.vb">
+      <DependentUpon>XafSplashScreen.vb</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="XafSplashScreen.resx">
+      <DependentUpon>XafSplashScreen.vb</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NonPersistentObjectsDemo.Module.Web\NonPersistentObjectsDemo.Module.Web.csproj">
-      <Project>{EFD113F7-1ED0-472C-8EBE-B1A7CAFB6C2B}</Project>
-      <Name>NonPersistentObjectsDemo.Module.Web</Name>
+    <ProjectReference Include="..\NonPersistentObjectsDemo.Module.Win\NonPersistentObjectsDemo.Module.Win.vbproj">
+      <Project>{72D644CD-C193-4572-B2E3-CA82819A1627}</Project>
+      <Name>NonPersistentObjectsDemo.Module.Win</Name>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NonPersistentObjectsDemo.Module\NonPersistentObjectsDemo.Module.csproj">
+    <ProjectReference Include="..\NonPersistentObjectsDemo.Module\NonPersistentObjectsDemo.Module.vbproj">
       <Project>{57ACDBDB-006E-43D3-9308-97857F2FF75D}</Project>
       <Name>NonPersistentObjectsDemo.Module</Name>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
-  <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-  </PropertyGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
   <Target Name="AfterBuild">
   </Target>
   -->
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
-        <WebProjectProperties>
-          <UseIIS>True</UseIIS>
-          <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>2064</DevelopmentServerPort>
-          <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2064/</IISUrl>
-          <NTLMAuthentication>False</NTLMAuthentication>
-          <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
-          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
-        </WebProjectProperties>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
 </Project>
