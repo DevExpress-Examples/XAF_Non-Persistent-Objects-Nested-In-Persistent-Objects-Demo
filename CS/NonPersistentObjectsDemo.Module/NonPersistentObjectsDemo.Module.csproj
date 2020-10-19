@@ -170,11 +170,6 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FunctionalTests\config.xml" />
-    <None Include="FunctionalTests\sample.ets" />
-    <None Include="FunctionalTests\ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Welcome.html" />
   </ItemGroup>
   <ItemGroup />
