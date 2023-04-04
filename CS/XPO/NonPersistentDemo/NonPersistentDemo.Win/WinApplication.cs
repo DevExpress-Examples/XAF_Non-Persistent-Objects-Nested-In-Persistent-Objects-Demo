@@ -24,6 +24,15 @@ public class NonPersistentDemoWindowsFormsApplication : WinApplication {
             e.Languages.Add(userLanguageName);
         }
     }
+
+    public override IObjectSpace GetObjectSpaceToShowDetailViewFrom(Frame sourceFrame, Type objectType, TargetWindow targetWindow) {
+        if(sourceFrame.View is ListView &&
+            sourceFrame.View.ObjectTypeInfo.Type == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent) &&
+            objectType == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent)) {
+            return sourceFrame.View.ObjectSpace;
+        }
+        return base.GetObjectSpaceToShowDetailViewFrom(sourceFrame, objectType, targetWindow);
+    }
     private void NonPersistentDemoWindowsFormsApplication_DatabaseVersionMismatch(object sender, DevExpress.ExpressApp.DatabaseVersionMismatchEventArgs e) {
 #if EASYTEST
         e.Updater.Update();

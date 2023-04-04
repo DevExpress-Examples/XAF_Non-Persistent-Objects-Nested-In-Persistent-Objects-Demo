@@ -21,6 +21,14 @@ public class NonPersistentDemoBlazorApplication : BlazorApplication {
         }
 #endif
     }
+    public override IObjectSpace GetObjectSpaceToShowDetailViewFrom(Frame sourceFrame, Type objectType, TargetWindow targetWindow) {
+        if(sourceFrame.View is ListView &&
+            sourceFrame.View.ObjectTypeInfo.Type == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent) &&
+            objectType == typeof(NonPersistentObjectsDemo.Module.BusinessObjects.Agent)) {
+            return sourceFrame.View.ObjectSpace;
+        }
+        return base.GetObjectSpaceToShowDetailViewFrom(sourceFrame, objectType, targetWindow);
+    }
     private void NonPersistentDemoBlazorApplication_DatabaseVersionMismatch(object sender, DatabaseVersionMismatchEventArgs e) {
 #if EASYTEST
         e.Updater.Update();
