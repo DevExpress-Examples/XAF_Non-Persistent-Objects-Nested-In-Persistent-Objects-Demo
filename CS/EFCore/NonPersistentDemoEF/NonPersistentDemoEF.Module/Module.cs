@@ -9,6 +9,7 @@ using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Model.DomainLogics;
 using DevExpress.ExpressApp.Model.NodeGenerators;
+using NonPersistentObjectsDemo.Module.BusinessObjects;
 
 namespace NonPersistentDemoEF.Module;
 
@@ -27,6 +28,30 @@ public sealed class NonPersistentDemoEFModule : ModuleBase {
     }
     public override void Setup(XafApplication application) {
         base.Setup(application);
+        application.SetupComplete += Application_SetupComplete;
         // Manage various aspects of the application UI and behavior at the module level.
+    }
+    private void Application_SetupComplete(object sender, EventArgs e) {
+        Application.ObjectSpaceCreated += Application_ObjectSpaceCreated;
+        NonPersistentObjectSpace.UseKeyComparisonToDetermineIdentity = true;
+    }
+    private void Application_ObjectSpaceCreated(object sender, ObjectSpaceCreatedEventArgs e) {
+        var cos = e.ObjectSpace as CompositeObjectSpace;
+        if(cos != null) {
+            if(!(cos.Owner is CompositeObjectSpace)) {
+                cos.PopulateAdditionalObjectSpaces((XafApplication)sender);
+                cos.AutoCommitAdditionalObjectSpaces = true;
+                cos.AutoRefreshAdditionalObjectSpaces = true;
+            }
+        }
+        var npos = e.ObjectSpace as NonPersistentObjectSpace;
+        if(npos != null) {
+            npos.AutoSetModifiedOnObjectChange = true;
+          //  new NPGroupAdapter(npos);
+            new NPFeatureAdapter(npos);
+            new NPResourceAdapter(npos);
+            //new NPAgentAdapter(npos);
+            //new NPTechnologyAdapter(npos);
+        }
     }
 }

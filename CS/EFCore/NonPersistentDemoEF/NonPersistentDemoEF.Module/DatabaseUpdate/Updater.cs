@@ -23,7 +23,7 @@ public class Updater : ModuleUpdater {
         //}
 
         //ObjectSpace.CommitChanges(); //Uncomment this line to persist created object(s).
-        new DemoDataCreator(ObjectSpace).CreateDemoObjects();
+       // new DemoDataCreator(ObjectSpace).CreateDemoObjects();
     }
     public override void UpdateDatabaseBeforeUpdateSchema() {
         base.UpdateDatabaseBeforeUpdateSchema();

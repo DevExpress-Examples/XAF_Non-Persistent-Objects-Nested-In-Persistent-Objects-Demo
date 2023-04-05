@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,21 +21,21 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         public Feature() : base() { }
         [Browsable(false)]
         [XmlIgnore]
-        public int LocalKey { get; set; }
+        public virtual int LocalKey { get; set; }
         [Browsable(false)]
         [XmlIgnore]
-        public Guid OwnerKey { get; set; }
+        public virtual Guid OwnerKey { get; set; }
         [VisibleInDetailView(false)]
         [VisibleInListView(false)]
-        [DevExpress.ExpressApp.Data.Key]
-        public string ID { get { return string.Format("{0:N}.{1:x8}", OwnerKey, LocalKey); } }
+        [Key]
+        public virtual string ID { get { return string.Format("{0:N}.{1:x8}", OwnerKey, LocalKey); } }
         private string _Name;
-        public string Name {
+        public virtual string Name {
             get { return _Name; }
             set { SetPropertyValue<string>(ref _Name, value); }
         }
         private double _Progress;
-        public double Progress {
+        public virtual double Progress {
             get { return _Progress; }
             set { SetPropertyValue<double>(ref _Progress, value); }
         }

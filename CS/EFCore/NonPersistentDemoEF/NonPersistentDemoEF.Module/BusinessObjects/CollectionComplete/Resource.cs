@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,31 +16,31 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
     public class Resource : NonPersistentObjectImpl, IAssignable<Resource> {
         [VisibleInDetailView(false)]
         [VisibleInListView(false)]
-        [DevExpress.ExpressApp.Data.Key]
-        public Guid Oid { get; set; }
+        [Key]
+        public virtual Guid Oid { get; set; }
         private string _Name;
-        public string Name {
+        public virtual string Name {
             get { return _Name; }
             set { SetPropertyValue<string>(ref _Name, value); }
         }
-        private string _URI;
-        public string URI {
+        private  string _URI;
+        public virtual string URI {
             get { return _URI; }
             set { SetPropertyValue<string>(ref _URI, value); }
         }
         private int _Priority;
-        public int Priority {
+        public virtual int Priority {
             get { return _Priority; }
             set { SetPropertyValue<int>(ref _Priority, value); }
         }
         private bool _Embed;
-        public bool Embed {
+        public virtual bool Embed {
             get { return _Embed; }
             set { SetPropertyValue<bool>(ref _Embed, value); }
         }
         [Browsable(false)]
         [XmlIgnore]
-        public Guid OwnerKey { get; set; }
+        public virtual  Guid OwnerKey { get; set; }
         public void Assign(Resource source) {
             Oid = source.Oid;
             OwnerKey = source.OwnerKey;

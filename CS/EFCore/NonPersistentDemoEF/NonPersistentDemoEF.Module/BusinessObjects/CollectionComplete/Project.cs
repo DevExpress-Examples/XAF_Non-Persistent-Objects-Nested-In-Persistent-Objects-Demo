@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -10,25 +11,28 @@ using DevExpress.Data.Filtering;
 using DevExpress.ExpressApp;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
-using DevExpress.Xpo;
+using DevExpress.Persistent.BaseImpl.EF;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
 
 namespace NonPersistentObjectsDemo.Module.BusinessObjects {
 
     [DevExpress.ExpressApp.DC.XafDefaultProperty(nameof(Project.CodeName))]
     [DefaultClassOptions]
-    public class Project : BaseObject, IObjectSpaceLink {
-        public Project(Session session) : base(session) { }
-
-        private string _CodeName;
-        public string CodeName {
-            get { return _CodeName; }
-            set { SetPropertyValue<string>(nameof(CodeName), ref _CodeName, value); }
+    public class Project : BaseObject {
+        public Project() {
+            ((INotifyPropertyChanged)this).PropertyChanged += Project_PropertyChanged;
         }
+
+
+
+        public virtual string CodeName {            get; set;        }
 
         #region Features
         private BindingList<Feature> _Features;
-        [Aggregated]
-        public BindingList<Feature> Features {
+        [NotMapped]
+
+        public virtual BindingList<Feature> Features {
             get {
                 if(_Features == null) {
                     _Features = new BindingList<Feature>();
@@ -41,39 +45,27 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
             var list = (BindingList<Feature>)sender;
             if(e.ListChangedType == ListChangedType.ItemAdded) {
                 var obj = list[e.NewIndex];
-                obj.OwnerKey = this.Oid;
+                obj.OwnerKey = this.ID;
                 obj.LocalKey = e.NewIndex + 1;
             }
             FeatureList = SerializationHelper.Save(Features);
         }
-        private string _FeatureList;
         [Browsable(false)]
-        [Size(SizeAttribute.Unlimited)]
-        public string FeatureList {
-            get { return _FeatureList; }
-            set { SetPropertyValue<string>(nameof(FeatureList), ref _FeatureList, value); }
-        }
+        public virtual string FeatureList { get; set; }
         #endregion
 
         #region MainFeature
-        private Feature _MainFeature;
         [DataSourceProperty(nameof(Features))]
-        public Feature MainFeature {
-            get { return _MainFeature; }
-            set { SetPropertyValue<Feature>(nameof(MainFeature), ref _MainFeature, value); }
-        }
-        private string _MainFeatureName;
+        [NotMapped]
+        public virtual Feature MainFeature { get; set; }
         [Browsable(false)]
-        public string MainFeatureName {
-            get { return _MainFeatureName; }
-            set { SetPropertyValue<string>(nameof(MainFeatureName), ref _MainFeatureName, value); }
-        }
+        public virtual string MainFeatureName { get; set; }
         #endregion
 
         #region Resources
         private BindingList<Resource> _Resources;
-        [Aggregated]
-        public BindingList<Resource> Resources {
+        [NotMapped]
+        public virtual BindingList<Resource> Resources {
             get {
                 if(_Resources == null) {
                     _Resources = new BindingList<Resource>();
@@ -85,46 +77,35 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
         private void _Resources_ListChanged(object sender, ListChangedEventArgs e) {
             var list = (BindingList<Resource>)sender;
             if(e.ListChangedType == ListChangedType.ItemAdded) {
-                list[e.NewIndex].OwnerKey = this.Oid;
+                list[e.NewIndex].OwnerKey = this.ID;
             }
             ResourceList = SerializationHelper.Save(Resources);
         }
-        private string _ResourceList;
         [Browsable(false)]
-        [Size(SizeAttribute.Unlimited)]
-        public string ResourceList {
-            get { return _ResourceList; }
-            set { SetPropertyValue<string>(nameof(ResourceList), ref _ResourceList, value); }
-        }
+        public virtual string ResourceList { get; set; }
         #endregion
 
-        protected override void OnChanged(string propertyName, object oldValue, object newValue) {
-            base.OnChanged(propertyName, oldValue, newValue);
-            if(propertyName == nameof(MainFeature)) {
-                MainFeatureName = (newValue as Feature)?.Name;
+
+
+        private void Project_PropertyChanged(object sender, PropertyChangedEventArgs e) {
+
+            if(e.PropertyName == nameof(MainFeature)) {
+                MainFeatureName = this.MainFeature?.Name;
             }
         }
-        protected override void OnLoaded() {
+        public override void OnLoaded() {
             base.OnLoaded();
             int counter = 0;
-            SerializationHelper.Load(Features, FeatureList, ObjectSpace, o => { o.OwnerKey = this.Oid; o.LocalKey = ++counter; });
-            SerializationHelper.Load(Resources, ResourceList, ObjectSpace, o => { o.OwnerKey = this.Oid; });
-            _MainFeature = MainFeatureName == null ? null : Features.FirstOrDefault(f => f.Name == MainFeatureName);
+            SerializationHelper.Load(Features, FeatureList, ObjectSpace, o => { o.OwnerKey = this.ID; o.LocalKey = ++counter; });
+            SerializationHelper.Load(Resources, ResourceList, ObjectSpace, o => { o.OwnerKey = this.ID; });
+            MainFeature = MainFeatureName == null ? null : Features.FirstOrDefault(f => f.Name == MainFeatureName);
         }
-        protected override void OnSaving() {
+
+        public override void OnSaving() {
             FeatureList = SerializationHelper.Save(Features);
             ResourceList = SerializationHelper.Save(Resources);
             base.OnSaving();
         }
-        private IObjectSpace _objectSpace;
-        protected IObjectSpace ObjectSpace { get { return _objectSpace; } }
-        IObjectSpace IObjectSpaceLink.ObjectSpace {
-            get { return _objectSpace; }
-            set {
-                if(_objectSpace != value) {
-                    _objectSpace = value;
-                }
-            }
-        }
+
     }
 }

@@ -9,6 +9,20 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="BusinessObjects\CollectionInSameSpace\**" />
+    <Compile Remove="BusinessObjects\CollectionStoredSeparately\**" />
+    <Compile Remove="BusinessObjects\LookupWithCustomSource\**" />
+    <EmbeddedResource Remove="BusinessObjects\CollectionInSameSpace\**" />
+    <EmbeddedResource Remove="BusinessObjects\CollectionStoredSeparately\**" />
+    <EmbeddedResource Remove="BusinessObjects\LookupWithCustomSource\**" />
+    <None Remove="BusinessObjects\CollectionInSameSpace\**" />
+    <None Remove="BusinessObjects\CollectionStoredSeparately\**" />
+    <None Remove="BusinessObjects\LookupWithCustomSource\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="DatabaseUpdate\DemoData.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Model.DesignedDiffs.xafml" />
   </ItemGroup>
   <ItemGroup>

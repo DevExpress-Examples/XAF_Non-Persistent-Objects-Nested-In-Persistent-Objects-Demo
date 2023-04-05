@@ -5,6 +5,7 @@ using DevExpress.Persistent.BaseImpl.EF.PermissionPolicy;
 using DevExpress.Persistent.BaseImpl.EF;
 using DevExpress.ExpressApp.Design;
 using DevExpress.ExpressApp.EFCore.DesignTime;
+using NonPersistentObjectsDemo.Module.BusinessObjects;
 
 namespace NonPersistentDemoEF.Module.BusinessObjects;
 
@@ -34,10 +35,11 @@ public class NonPersistentDemoEFDesignTimeDbContextFactory : IDesignTimeDbContex
 public class NonPersistentDemoEFEFCoreDbContext : DbContext {
 	public NonPersistentDemoEFEFCoreDbContext(DbContextOptions<NonPersistentDemoEFEFCoreDbContext> options) : base(options) {
 	}
-	//public DbSet<ModuleInfo> ModulesInfo { get; set; }
+	public DbSet<Project> Project { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues);
+        modelBuilder.HasChangeTrackingStrategy(ChangeTrackingStrategy.ChangingAndChangedNotificationsWithOriginalValues).Entity<Feature>(f=>f.HasNoKey())
+            .Entity<NonPersistentObjectsDemo.Module.BusinessObjects.Resource>(r=>r.HasNoKey());
     }
 }
