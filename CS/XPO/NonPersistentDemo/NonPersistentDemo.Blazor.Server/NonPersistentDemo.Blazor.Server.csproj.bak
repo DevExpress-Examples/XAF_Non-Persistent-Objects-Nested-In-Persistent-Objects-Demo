@@ -21,6 +21,6 @@
     <PackageReference Include="DevExpress.ExpressApp.CodeAnalysis" Version="22.2.4" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NonPersistentDemoEF.Module\NonPersistentDemoEF.Module.csproj" />
+    <ProjectReference Include="..\NonPersistentDemo.Module\NonPersistentDemo.Module.csproj" />
   </ItemGroup>
 </Project>
