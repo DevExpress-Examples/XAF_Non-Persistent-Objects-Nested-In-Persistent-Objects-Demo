@@ -5,8 +5,8 @@
 <!-- default badges end -->
 *Common files to look at*:
 
-* [Module.cs](./CS/NonPersistentObjectsDemo.Module/Module.cs)
-* [NonPersistentObjectAdapter.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/NonPersistentObjectAdapter.cs)
+* [Module.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/Module.cs)
+* [NonPersistentObjectAdapter.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/NonPersistentObjectAdapter.cs)
 
 
 # How to edit Non-Persistent Objects nested in a Persistent Object
@@ -23,8 +23,8 @@ In a persistent business object, we have a string field. We want to represent th
 This scenario is demonstrated by the **Product** business object. We add a hidden persistent *GroupName* string property and a visible non-persistent *Group* property. The non-persistent **Group** class represents existing string values and has the *Name* property that is also a key property. In the *Product* class, we override the *OnLoaded* method to create a *Group* based on the stored *GroupName* value. We also override the *OnChanged* method to update the *GroupName* property when the *Group* property is changed. To populate the lookup list view, we subscribe to the [NonPersistentObjectSpace\.ObjectsGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectsGetting) event and collect distinct group names from all existing Product objects.
 
 *Files to look at*:
-* [Product.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/LookupWithCustomSource/Product.cs)
-* [Group.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/LookupWithCustomSource/Group.cs)
+* [Product.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Product.cs)
+* [Group.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Group.cs)
 
 
 ## Scenario 2: A nested collection of Non-Persistent objects stored in the owner Persistent object
@@ -40,8 +40,8 @@ In the *Project* class, we have a hidden persistent *FeatureList* string propert
 The **NPFeatureAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map. In the overridden *LoadObjectByKey* method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), we parse the compound key, locate the owner (*Project*) using *OwnerKey* and search for the desired *Feature* in its *Features* collection using *LocalKey*.
 
 *Files to look at*:
-* [Project.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionComplete/Project.cs)
-* [Feature.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionComplete/Feature.cs)
+* [Project.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Project.cs)
+* [Feature.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Feature.cs)
 
 ### Solution B
 
@@ -50,8 +50,8 @@ This solution is demonstrated by the **Department** business object. The non-per
 The **NPAgentAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map.
 
 *Files to look at*:
-* [Department.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionInSameSpace/Department.cs)
-* [Agent.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionInSameSpace/Agent.cs)
+* [Department.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Department.cs)
+* [Agent.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Agent.cs)
 
 
 ## Scenario 3: A nested collection of Non-Persistent objects stored separately
@@ -65,8 +65,8 @@ In the *Epoch* class, we have a hidden persistent *TechnologyList* string proper
 The **NPTechnologyAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map. In the overridden *LoadObjectByKey* method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), we load *Technology* data from the storage and create object instances. In the overridden *CommitChanges* method (called when the [CustomCommitChanges](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.BaseObjectSpace.CustomCommitChanges) event is raised) we save *Technology* object data to the storage.
 
 *Files to look at*:
-* [Epoch.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionStoredSeparately/Epoch.cs)
-* [Technology.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionStoredSeparately/Technology.cs)
+* [Epoch.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Epoch.cs)
+* [Technology.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Technology.cs)
 
 
 
