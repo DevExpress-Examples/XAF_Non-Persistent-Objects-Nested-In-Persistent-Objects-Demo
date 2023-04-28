@@ -68,3 +68,8 @@ The **NPTechnologyAdapter** class (derived from the common **NonPersistentObject
 * [Epoch.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionStoredSeparately/Epoch.cs)
 * [Technology.cs](./CS/NonPersistentObjectsDemo.Module/BusinessObjects/CollectionStoredSeparately/Technology.cs)
 
+
+
+
+
+#### We don't have an EF Core version of this example. If you need this version, please create a ticket in our (Support Center)[https://supportcenter.devexpress.com/ticket/list?preset=mytickets] and describe your ultimate goal in detail. We will do our best to assist you.
