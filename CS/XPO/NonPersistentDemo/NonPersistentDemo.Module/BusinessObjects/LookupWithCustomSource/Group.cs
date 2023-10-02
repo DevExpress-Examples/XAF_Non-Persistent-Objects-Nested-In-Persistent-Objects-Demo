@@ -13,6 +13,7 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
     [DefaultProperty(nameof(Group.Name))]
     public class Group {
         [DevExpress.ExpressApp.Data.Key]
+        [Browsable(true)]
         public string Name { get; set; }
     }
 
