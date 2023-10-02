@@ -21,11 +21,6 @@ namespace NonPersistentObjectsDemo.Module.BusinessObjects {
                     ((CompositeObjectSpace)ObjectSpace).AutoCommitAdditionalObjectSpaces = true;
                     new NPTechnologyAdapter(npos);
                 }
-                var cnt = ObjectSpace.GetObjectsCount(typeof(Epoch), null);
-                if(cnt > 0) {
-                    return;
-                }
-                    
                 CreateProjects();
                 CreateProducts();
                 CreateEpochs();
