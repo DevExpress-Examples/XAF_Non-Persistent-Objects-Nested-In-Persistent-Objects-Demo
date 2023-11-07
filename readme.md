@@ -15,6 +15,10 @@ It is often required to store some complex data in persistent business objects i
 
 To make certain built-in functionality work for the combination of persistent and non-persistent objects, in the common Module we subscribe to the [XafApplication\.ObjectSpaceCreated](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.ObjectSpaceCreated) event and call the **CompositeObjectSpace.PopulateAdditionalObjectSpaces** method. Also, we enable the **AutoCommitAdditionalObjectSpaces**, **AutoRefreshAdditionalObjectSpaces**, and [AutoSetModifiedOnObjectChange](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.AutoSetModifiedOnObjectChange) options and setup helpers (adapters) that will handle [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events.
 
+> [!WARNING]
+> We created this example for demonstration purposes and didn't intend to address all possible usage scenarios with it.
+> If this example doesn't have some functionality or you wish to change its behavior, feel free to extend this example as you need. Please note that this is quite a complex task, which requires good knowledge of XAF: [UI Customization Categories by Skill Level](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#ui-customization-categories). You will likely need to research how our components work under the hood. Refer to the following help topic for more information: [Debug DevExpress .NET Source Code with PDB Symbols](https://docs.devexpress.com/GeneralInformation/403656/support-debug-troubleshooting/debug-controls-with-debug-symbols).
+> Unfortunately, we can't help you much with such tasks as custom programming goes beyond our Support Service scope: [Technical Support Scope](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#support).
 
 ## Scenario 1: A Non-Persistent lookup property
 
