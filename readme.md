@@ -4,13 +4,11 @@
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 
-
-
 # How to edit Non-Persistent Objects nested in a Persistent Object
 
 
 
-It is often required to store some complex data in persistent business objects in a compact form (as a string or a byte array) but show and edit this complex data as objects using the standard XAF UI. To solve this task in XAF v20.2+, you can use [Non\-Persistent Objects](https://docs.devexpress.com/eXpressAppFramework/116516/concepts/business-model-design/non-persistent-objects) nested in persistent business objects as reference and collection properties. This example demonstrates possible implementations for a few such scenarios.
+It is often required to store some complex data in persistent business objects in a compact form (as a string or a byte array) but show and edit this complex data as objects using the standard XAF UI. To solve this task in XAF, use [Non\-Persistent Objects](https://docs.devexpress.com/eXpressAppFramework/116516/concepts/business-model-design/non-persistent-objects) nested in persistent business objects as reference or collection properties. This example demonstrates possible implementations for a few such scenarios.
 
 To make certain built-in functionality work for the combination of persistent and non-persistent objects, in the common Module we subscribe to the [XafApplication\.ObjectSpaceCreated](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.ObjectSpaceCreated) event and call the **CompositeObjectSpace.PopulateAdditionalObjectSpaces** method. Also, we enable the **AutoCommitAdditionalObjectSpaces**, **AutoRefreshAdditionalObjectSpaces**, and [AutoSetModifiedOnObjectChange](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.AutoSetModifiedOnObjectChange) options and setup helpers (adapters) that will handle [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events.
 
