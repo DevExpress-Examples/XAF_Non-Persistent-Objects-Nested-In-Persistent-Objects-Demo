@@ -77,13 +77,19 @@ The **NPTechnologyAdapter** class (derived from the common **NonPersistentObject
 - [Module.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/Module.cs)
 - [NonPersistentObjectAdapter.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/NonPersistentObjectAdapter.cs)
 
+## Documentation
+
+- [Non-Persistent Objects](https://docs.devexpress.com/eXpressAppFramework/116516/business-model-design-orm/non-persistent-objects)
+
+
 ## More Examples
 
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo: How to implement CRUD operations for Non-Persistent Objects stored remotely in eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo)
-
+- [How to implement CRUD operations for Non-Persistent Objects stored remotely in eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo)
+- [How to edit Non-Persistent Objects nested in a Persistent Object](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo)
+- [How to: Display a List of Non-Persistent Objects](https://github.com/DevExpress-Examples/XAF_how-to-display-a-list-of-non-persistent-objects-e980)
+- [How to filter and sort Non-Persistent Objects](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo)
+- [How to refresh Non-Persistent Objects and reload nested Persistent Objects](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo)
+- [How to edit a collection of Persistent Objects linked to a Non-Persistent Object](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Edit-Linked-Persistent-Objects-Demo)
 
 
 #### We don't have an EF Core version of this example. If you need this version, please create a ticket in our [Support Center](https://supportcenter.devexpress.com/ticket/list?preset=mytickets) and describe your ultimate goal in detail. We will do our best to assist you.
