@@ -27,7 +27,7 @@ To create built-in functionality that can applied to a combination of persistent
 
 ### Scenario 1: A non-persistent lookup property
 
-You have a string field in a persistent business object. You want to display this field in the UI using a lookup editor so that a user can choose from existing values or add a new value. The list of existing values is created dynamically.
+If you have a string field in a persistent business object, you can display this field in the UI using a lookup editor so that a user can choose from existing values or add a new value. The list of existing values is created dynamically.
 
 To implement this scenario, do the following:
 
