@@ -44,7 +44,7 @@ To implement this scenario, do the following:
 
 ### Scenario 2: A nested collection of non-persistent objects stored in the owner persistent object
 
-In a persistent business object, you have a string field where we store a collection of complex data items serialized to XML. You want to show this XML in the UI as a nested list view and allow users to edit collection items, add new items, and delete existing items.
+In this scenario, a persistent business object includes a string field. This field holds a collection of complex data items serialized to XML. You need to display that collection in the UI as a List View (and not as just a text field that contains XML code). This example creates such a List View that allows users to browse and modify the collection and its individual items.
 
 #### Solution A
 
