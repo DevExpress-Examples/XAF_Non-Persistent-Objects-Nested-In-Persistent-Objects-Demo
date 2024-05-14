@@ -1,92 +1,108 @@
 <!-- default badges list -->
-![](https://img.shields.io/endpoint?url=https://codecentral.devexpress.com/api/v1/VersionRange/278218156/22.2.4%2B)
 [![](https://img.shields.io/badge/Open_in_DevExpress_Support_Center-FF7200?style=flat-square&logo=DevExpress&logoColor=white)](https://supportcenter.devexpress.com/ticket/details/T919644)
 [![](https://img.shields.io/badge/📖_How_to_use_DevExpress_Examples-e9f6fc?style=flat-square)](https://docs.devexpress.com/GeneralInformation/403183)
 <!-- default badges end -->
 
+# XAF - How to edit non-persistent objects nested in a persistent object
 
+Often times we are required to store complex data in persistent business objects in compact form (as a string or a byte array), but to show and edit this complex data as objects using standard XAF UI. To address this task in XAF, use [non\-persistent objects](https://docs.devexpress.com/eXpressAppFramework/116516/concepts/business-model-design/non-persistent-objects) nested in persistent business objects as reference or collection properties. This example demonstrates possible implementations for such scenarios.
 
-# How to edit Non-Persistent Objects nested in a Persistent Object
+To create built-in functionality that can applied to a combination of persistent and non-persistent objects, follow the steps below: 
 
-
-
-It is often required to store some complex data in persistent business objects in a compact form (as a string or a byte array) but show and edit this complex data as objects using the standard XAF UI. To solve this task in XAF v20.2+, you can use [Non\-Persistent Objects](https://docs.devexpress.com/eXpressAppFramework/116516/concepts/business-model-design/non-persistent-objects) nested in persistent business objects as reference and collection properties. This example demonstrates possible implementations for a few such scenarios.
-
-To make certain built-in functionality work for the combination of persistent and non-persistent objects, in the common Module we subscribe to the [XafApplication\.ObjectSpaceCreated](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.ObjectSpaceCreated) event and call the **CompositeObjectSpace.PopulateAdditionalObjectSpaces** method. Also, we enable the **AutoCommitAdditionalObjectSpaces**, **AutoRefreshAdditionalObjectSpaces**, and [AutoSetModifiedOnObjectChange](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.AutoSetModifiedOnObjectChange) options and setup helpers (adapters) that will handle [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events.
+1. In the common **Module**, subscribe to the [XafApplication\.ObjectSpaceCreated](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.XafApplication.ObjectSpaceCreated) event.
+2. Call the [CompositeObjectSpace\.PopulateAdditionalObjectSpaces](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.CompositeObjectSpace.PopulateAdditionalObjectSpaces.overloads?p=net6) method.
+3. Enable the [AutoCommitAdditionalObjectSpaces](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.CompositeObjectSpace.AutoCommitAdditionalObjectSpaces?p=net6), [AutoRefreshAdditionalObjectSpaces](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.CompositeObjectSpace.AutoRefreshAdditionalObjectSpaces?p=net6), and [AutoSetModifiedOnObjectChange](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.AutoSetModifiedOnObjectChange) options, and set up helpers (adapters) that will handle [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events.
 
 > [!WARNING]
-> We created this example for demonstration purposes and didn't intend to address all possible usage scenarios with it.
-> If this example doesn't have some functionality or you wish to change its behavior, feel free to extend this example as you need. Please note that this is quite a complex task, which requires good knowledge of XAF: [UI Customization Categories by Skill Level](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#ui-customization-categories). You will likely need to research how our components work under the hood. Refer to the following help topic for more information: [Debug DevExpress .NET Source Code with PDB Symbols](https://docs.devexpress.com/GeneralInformation/403656/support-debug-troubleshooting/debug-controls-with-debug-symbols).
-> Unfortunately, we can't help you much with such tasks as custom programming goes beyond our Support Service scope: [Technical Support Scope](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#support).
-
-
-## Implementation Details
-
-### Scenario 1: A Non-Persistent lookup property
-
-In a persistent business object, we have a string field. We want to represent this field in the UI using a lookup editor, so a user can select from existing values of add a new value. The list of existing values is generated dynamically.
-
-This scenario is demonstrated by the **Product** business object. We add a hidden persistent *GroupName* string property and a visible non-persistent *Group* property. The non-persistent **Group** class represents existing string values and has the *Name* property that is also a key property. In the *Product* class, we override the *OnLoaded* method to create a *Group* based on the stored *GroupName* value. We also override the *OnChanged* method to update the *GroupName* property when the *Group* property is changed. To populate the lookup list view, we subscribe to the [NonPersistentObjectSpace\.ObjectsGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectsGetting) event and collect distinct group names from all existing Product objects.
-
-*Files to look at*:
-* [Product.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Product.cs)
-* [Group.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Group.cs)
-
-
-### Scenario 2: A nested collection of Non-Persistent objects stored in the owner Persistent object
-
-In a persistent business object, we have a string field where we store a collection of complex data items serialized to XML. We want to show this XML in the UI as a nested list view and allow users to edit collection items, add new items, and delete existing items.
-
-#### Solution A
-
-This solution is demonstrated by the **Project** business object. The non-persistent **Feature** class represents complex collection items. The *Feature* class has a compound key that consists of the *OwnerKey* and *LocalKey* parts. The *OwnerKey* is used to locate the owner object (*Project*). The *LocalKey* is used to identify a *Feature* object within the collection. These keys are not serialized and exist at runtime only. 
-
-In the *Project* class, we have a hidden persistent *FeatureList* string property and a visible non-persistent *Features* aggregated collection property. We override the *OnLoaded* and *OnSaving* methods to serialize and deserialize the *Features* collection. Note that after deserialization we initialize the local key property and the owner key property. Then, we call the [NonPersistentObjectSpace\.GetObject](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.GetObject(System.Object)) method to avoid creating duplicated objects and apply deserialized data to the found object. We also subscribe to the IBindingList.ListChanged event of the *Features* collection to initialize keys of a newly added object and update the persistent *FeatureList* property whenever the collection is modified.
-
-The **NPFeatureAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map. In the overridden *LoadObjectByKey* method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), we parse the compound key, locate the owner (*Project*) using *OwnerKey* and search for the desired *Feature* in its *Features* collection using *LocalKey*.
-
-*Files to look at*:
-* [Project.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Project.cs)
-* [Feature.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Feature.cs)
-
-#### Solution B
-
-This solution is demonstrated by the **Department** business object. The non-persistent **Agent** class represents complex collection items. The *Agent* class has a simple key. In *WinApplication* and *WebApplication* descendants we override the **GetObjectSpaceToShowDetailViewFrom** method to reuse the source object space for windows showing *Agent* objects. This approach simplifies the code but changes made to non-persistent objects in separate windows cannot be undone. As a consequence, these windows have no Save and Cancel actions.
-
-The **NPAgentAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map.
-
-*Files to look at*:
-* [Department.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Department.cs)
-* [Agent.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Agent.cs)
-
-
-### Scenario 3: A nested collection of Non-Persistent objects stored separately
-
-In a persistent business object, we have a string field where we store a sequence of key values. These keys correspond to objects stored elsewhere (in the application model or an external service). We want to show these objects in the UI as a nested list view and allow users to edit the collection by adding and removing items.
-
-This scenario is demonstrated by the **Epoch** business object. The non-persistent **Technology** class represents complex collection items. In this example, we store *Technology* objects in a static dictionary.
-
-In the *Epoch* class, we have a hidden persistent *TechnologyList* string property and a visible non-persistent *Technologies* collection property. We override the *OnLoaded* and *OnSaving* methods to serialize and deserialize the *Technologies* collection. After deserialization we call the [GetObjectByKey](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.BaseObjectSpace.GetObjectByKey--1(System.Object)) method to load related *Technology* objects.
-
-The **NPTechnologyAdapter** class (derived from the common **NonPersistentObjectAdapter** helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map. In the overridden *LoadObjectByKey* method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), we load *Technology* data from the storage and create object instances. In the overridden *CommitChanges* method (called when the [CustomCommitChanges](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.BaseObjectSpace.CustomCommitChanges) event is raised) we save *Technology* object data to the storage.
-
-*Files to look at*:
-* [Epoch.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Epoch.cs)
-* [Technology.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Technology.cs)
-
+> We created this example for demonstration purposes and it is not intended to address all possible usage scenarios.
+> If this example does not have certain functionality or you want to change its behavior, you can extend this example. Note that such an action can be complex and would require good knowledge of XAF: [UI Customization Categories by Skill Level](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#ui-customization-categories) and a possible research of how our components function. Refer to the following help topic for more information: [Debug DevExpress .NET Source Code with PDB Symbols](https://docs.devexpress.com/GeneralInformation/403656/support-debug-troubleshooting/debug-controls-with-debug-symbols).
+> We are unable to help with such tasks as custom programming is outside our Support Service purview: [Technical Support Scope](https://www.devexpress.com/products/net/application_framework/xaf-considerations-for-newcomers.xml#support).
 
 ## Files to Review
 
 - [Module.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/Module.cs)
 - [NonPersistentObjectAdapter.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/NonPersistentObjectAdapter.cs)
 
+## Implementation Details
+
+### Scenario 1: A non-persistent lookup property
+
+If you have a string field in a persistent business object, you can display this field in the UI using a lookup editor so that a user can choose from existing values or add a new value. The list of existing values is created dynamically.
+
+To implement this scenario, do the following:
+
+1. This scenario is demonstrated by the **Product** business object. Add a hidden persistent `GroupName` string property and a visible non-persistent `Group` property. The non-persistent `Group` class defines existing string values and has the `Name` property that is also a key property.
+2. In the `Product` class, override the `OnLoaded` method to create a `Group` based on the stored `GroupName` value.
+3. Also, override the `OnChanged` method to update the `GroupName` property when the `Group` property is changed.
+4. To populate the lookup list view, subscribe to the [NonPersistentObjectSpace\.ObjectsGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectsGetting) event and collect unique group names from all existing Product objects.
+
+#### Files to Review
+
+* [Product.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Product.cs)
+* [Group.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/LookupWithCustomSource/Group.cs)
+
+
+### Scenario 2: A nested collection of non-persistent objects stored in the owner persistent object
+
+In this scenario, a persistent business object includes a string field. This field holds a collection of complex data items serialized to XML. You need to display that collection in the UI as a List View (and not as just a text field that contains XML code). This example creates such a List View that allows users to browse and modify the collection and its individual items.
+
+#### Solution A
+
+1. This solution is demonstrated by the **Project** business object. The non-persistent **Feature** class represents complex collection items. The `Feature` class has a compound key that consists of the `OwnerKey` and `LocalKey` parts. The `OwnerKey` is used to locate the owner object (`Project`). The `LocalKey` is used to identify a `Feature` object within the collection. These keys are not serialized and exist at runtime only.
+2. The `Project` class has a hidden persistent `FeatureList` string property and a visible non-persistent `Features` aggregated collection property.
+3. Override the `OnLoaded` and `OnSaving` methods to serialize and deserialize the `Features` collection. Note that after deserialization, you should initialize the local key property and the owner key property.
+4. Call the [NonPersistentObjectSpace\.GetObject](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.GetObject(System.Object)) method to avoid creation of duplicated objects and to apply deserialized data to the found object.
+5. Subscribe to the `IBindingList.ListChanged` event of the `Features` collection to initialize keys of a newly added object and update the persistent `FeatureList` property whenever the collection is modified.
+6. The `NPFeatureAdapter` class (derived from the common `NonPersistentObjectAdapter` helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map.
+7. In the overridden `LoadObjectByKey` method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), parse the compound key, locate the owner (`Project`) using `OwnerKey`, and search for the desired `Feature` in its `Features` collection using `LocalKey`.
+
+##### Files to Review
+
+* [Project.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Project.cs)
+* [Feature.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionComplete/Feature.cs)
+
+#### Solution B
+
+1. This solution is demonstrated by the **Department** business object. The non-persistent **Agent** class stores complex collection items and has a simple key.
+2. In `WinApplication` and `WebApplication`, descendants override the `GetObjectSpaceToShowDetailViewFrom` method to reuse the source object space for windows that display `Agent` objects. This approach simplifies code, but changes made to non-persistent objects in separate windows cannot be undone. As a result, these windows do not have **Save** and **Cancel** actions.
+3. The `NPAgentAdapter` class (derived from the common `NonPersistentObjectAdapter` helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map.
+
+##### Files to Review
+
+* [Department.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Department.cs)
+* [Agent.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionInSameSpace/Agent.cs)
+
+
+### Scenario 3: A nested collection of non-persistent objects stored separately
+
+In a persistent business object, you have a string field where we store a sequence of key values. These keys correspond to objects stored elsewhere (in the application model or in an external service). You need to show these objects in the UI as a nested list view and allow users to edit the collection by adding and removing items.
+
+1. This scenario is demonstrated by the **Epoch** business object. The non-persistent **Technology** class represents complex collection items. In this example, a static dictionary stores `Technology` objects.
+2. The `Epoch` class has a hidden persistent `TechnologyList` string property and a visible non-persistent `Technologies` collection property.
+3. Override the `OnLoaded` and `OnSaving` methods to serialize and deserialize the `Technologies` collection.
+4. After deserialization, call the [GetObjectByKey](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.BaseObjectSpace.GetObjectByKey--1(System.Object)) method to load related `Technology` objects.
+5. The `NPTechnologyAdapter` class (derived from the common `NonPersistentObjectAdapter` helper class) is used to subscribe to [NonPersistentObjectSpace](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace) events and maintain an object identity map.
+6. In the overridden `LoadObjectByKey` method (called when the [ObjectByKeyGetting](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.NonPersistentObjectSpace.ObjectByKeyGetting) event is raised), load `Technology` data from storage and create object instances.
+7. In the overridden `CommitChanges` method (called when the [CustomCommitChanges](https://docs.devexpress.com/eXpressAppFramework/DevExpress.ExpressApp.BaseObjectSpace.CustomCommitChanges) event is raised), save `Technology` object data to storage.
+
+##### Files to Review 
+
+* [Epoch.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Epoch.cs)
+* [Technology.cs](./CS/XPO/NonPersistentDemo/NonPersistentDemo.Module/BusinessObjects/CollectionStoredSeparately/Technology.cs)
+
+## Documentation
+
+- [Non-Persistent Objects](https://docs.devexpress.com/eXpressAppFramework/116516/business-model-design-orm/non-persistent-objects)
+
+
 ## More Examples
 
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo: How to implement CRUD operations for Non-Persistent Objects stored remotely in eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo)
-- [DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo: .NET, Frameworks (XAF & XPO), eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo)
-
+- [How to implement CRUD operations for Non-Persistent Objects stored remotely in eXpressApp Framework](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Editing-Demo)
+- [How to edit Non-Persistent Objects nested in a Persistent Object](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo)
+- [How to: Display a List of Non-Persistent Objects](https://github.com/DevExpress-Examples/XAF_how-to-display-a-list-of-non-persistent-objects-e980)
+- [How to filter and sort Non-Persistent Objects](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Filtering-Demo)
+- [How to refresh Non-Persistent Objects and reload nested Persistent Objects](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Reloading-Demo)
+- [How to edit a collection of Persistent Objects linked to a Non-Persistent Object](https://github.com/DevExpress-Examples/XAF_Non-Persistent-Objects-Edit-Linked-Persistent-Objects-Demo)
 
 
 #### We don't have an EF Core version of this example. If you need this version, please create a ticket in our [Support Center](https://supportcenter.devexpress.com/ticket/list?preset=mytickets) and describe your ultimate goal in detail. We will do our best to assist you.
