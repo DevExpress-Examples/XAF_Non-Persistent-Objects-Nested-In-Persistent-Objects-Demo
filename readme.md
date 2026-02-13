@@ -109,7 +109,7 @@ In a persistent business object, you have a string field where we store a sequen
 
 #### We don't have an EF Core version of this example. If you need this version, please create a ticket in our [Support Center](https://supportcenter.devexpress.com/ticket/list?preset=mytickets) and describe your ultimate goal in detail. We will do our best to assist you.
 <!-- feedback -->
-## Does this example address your development requirements/objectives?
+## Does This Example Address Your Development Requirements/Objectives?
 
 [<img src="https://www.devexpress.com/support/examples/i/yes-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo&~~~was_helpful=yes) [<img src="https://www.devexpress.com/support/examples/i/no-button.svg"/>](https://www.devexpress.com/support/examples/survey.xml?utm_source=github&utm_campaign=XAF_Non-Persistent-Objects-Nested-In-Persistent-Objects-Demo&~~~was_helpful=no)
 
