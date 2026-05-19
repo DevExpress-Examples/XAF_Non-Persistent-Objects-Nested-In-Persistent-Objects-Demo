@@ -14,7 +14,6 @@ public class NonPersistentDemoWindowsFormsApplication : WinApplication {
 		SplashScreen = new DXSplashScreen(typeof(XafSplashScreen), new DefaultOverlayFormOptions());
         ApplicationName = "NonPersistentDemo";
         CheckCompatibilityType = DevExpress.ExpressApp.CheckCompatibilityType.DatabaseSchema;
-        UseOldTemplates = false;
         DatabaseVersionMismatch += NonPersistentDemoWindowsFormsApplication_DatabaseVersionMismatch;
         CustomizeLanguagesList += NonPersistentDemoWindowsFormsApplication_CustomizeLanguagesList;
     }
